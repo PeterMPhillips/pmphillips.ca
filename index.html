@@ -1,0 +1,238 @@
+<html>
+  <head>
+    <title>PMPhillips</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=0.75, maximum-scale=1"/>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
+  </head>
+    <div id='background'></div>
+    <style>
+      @font-face {
+        font-family: futuristfixed;
+        src: url('fonts/futurist/FUTRFW.TTF');
+      }
+      *{
+        padding: 0;
+        margin: 0;
+      }
+      a {
+        text-decoration:none;
+      }
+      #background {
+        width:100%;
+        height:calc(100% - 10px);
+        font-family: futuristfixed;
+        font-size:18px;
+        color:#ccc;
+        cursor: default;
+      }
+
+      #background p {
+        margin:5px;
+        line-height:20px;
+      }
+
+      .title {
+        color:#000
+      }
+
+      .slow {
+        transition:color 2s;
+      }
+
+      .quick {
+        transition:color 0.5s;
+      }
+
+      .prev_background {
+        color: #ccc;
+      }
+
+      .highlight.display, .prev_highlight {
+        color: #666;
+      }
+
+      a.highlight.display:hover {
+        color: #00708c;
+      }
+
+      .lowlight.display, .prev_lowlight {
+        color: #999;
+      }
+
+      .selected.display, .prev_selected, .clickable:hover {
+        color: #a81a12;
+      }
+
+      .clickable {
+        cursor: pointer;
+      }
+
+    </style>
+    <body>
+    <script>
+      var currentState = 'default'
+      var prevState = ''
+      $(function() {
+        createBackground(currentState, prevState);
+        $(window).resize(function(){
+          createBackground(currentState, prevState);
+        });
+      });
+
+      function changeState(state, prev_state) {
+        currentState = state;
+        prevState = prev_state;
+        createBackground(currentState, prevState);
+      }
+
+      function createBackground(state, prev_state) {
+        var char = {
+          width: 18,
+          height: 25
+        }
+        var columns = Math.floor(($(window).width()-10)/char.width)
+        var rows = Math.floor(($(window).height()-10)/char.height)
+        var name = 'PMPHILLIPS'
+        var email = 'HELLO@PMPHILLIPS.CA'
+        var tag = 'MAKE SENSE OF YOUR DATA'
+        var services = ['Web_Development', 'Blockchain', 'Smart_Contracts', 'DAOs', 'Distributed_Networks', 'Data_Visualization', 'Social_Network_Analysis', 'Bots/Crawlers']
+
+        let string;
+        $('#background').empty()
+        for(var i=0; i<rows; i++){
+          if(i===0){
+            string = randomString(columns - name.length)
+            string = "<span id='name' class='title'>" + name + "</span>" + string
+          } else if(state === 'contact'){
+             if(i===Math.floor(rows/2)+4){
+              string = createSpan('contact', 'Contact', '', 'selected', 'selected', true, columns/2)
+            } else if(i===Math.floor(rows/2)-5){
+              string = createSpan('projects', 'Projects', '', 'lowlight', 'lowlight', true, columns-10)
+            } else if(i===Math.floor(rows/2)-7){
+              string = createSpan('services', 'Services', '', 'lowlight', 'lowlight', true, columns/8)
+            } else if(i===rows-1){
+              string = createSpan('email', email, 'mailto:' + email.toLowerCase(), 'highlight', 'background', false, columns-email.length)
+            } else if(i===Math.floor(rows/2)-11){
+              string = createSpan('keybase', 'Keybase', 'https://www.keybase.io/pmphillips', 'highlight', 'background', false, columns/3)
+            } else if(i===Math.floor(rows/2)-3){
+              string = createSpan('github', 'GitHub', 'https://www.github.com/PeterMPhillips', 'highlight', 'background', false, columns/1.5)
+            } else if(i===Math.floor(rows/2)+6){
+              string = createSpan('twitter', 'Twitter', 'https://www.twitter.com/0xPMP', 'highlight', 'background', false, columns/6)
+            } else {
+              string = randomString(columns)
+            }
+          } else if(state === 'services'){
+            if(i===Math.floor(rows/2)+4){
+              string = createSpan('contact', 'Contact', '', 'lowlight', 'lowlight', true, columns/2)
+            } else if(i===Math.floor(rows/2)-5){
+              string = createSpan('projects', 'Projects', '', 'lowlight', 'lowlight', true, columns-10)
+            } else if(i===Math.floor(rows/2)-7){
+              string = createSpan('services', 'Services', '', 'selected', 'selected', true, columns/8)
+            } else if(i===Math.floor(rows/2)-11){
+              string = createSpan('web_developement', 'Web_Development', '', 'highlight', 'background', false, columns/14)
+            } else if(i===Math.floor(rows/2)-9){
+              string = createSpan('blockchain', 'Blockchain', '', 'highlight', 'background', false, columns/2)
+            } else if(i===Math.floor(rows/2)-4){
+              string = createSpan('smart_contracts', 'Smart_Contracts', '', 'highlight', 'background', false, columns/4)
+            } else if(i===Math.floor(rows/2)-1){
+              string = createSpan('daos', 'DAOs', '', 'highlight', 'background', false, 5)
+            } else if(i===Math.floor(rows/2)+1){
+              string = createSpan('distributed_networks', 'Distributed_Networks', '', 'highlight', 'background', false, columns-25)
+            } else if(i===Math.floor(rows/2)+3){
+              string = createSpan('data_visualization', 'Data_Visualization', '', 'highlight', 'background', false, columns/7)
+            } else if(i===Math.floor(rows/2)+8){
+              string = createSpan('bots', 'Bots/Crawlers', '', 'highlight', 'background', false, columns/1.25-13)
+            } else if(i===Math.floor(rows/2)+11){
+              string = createSpan('network_analysis', 'Network_Analysis', '', 'highlight', 'background', false, columns/3)
+            } else {
+              string = randomString(columns)
+            }
+          } else if(state === 'projects'){
+            if(i===Math.floor(rows/2)+4){
+              string = createSpan('contact', 'Contact', '', 'lowlight', 'lowlight', true, columns/2)
+            } else if(i===Math.floor(rows/2)-5){
+              string = createSpan('projects', 'Projects', '', 'selected', 'selected', true, columns-10)
+            } else if(i===Math.floor(rows/2)-7){
+              string = createSpan('services', 'Services', '', 'lowlight', 'lowlight', true, columns/8)
+            } else if(i===Math.floor(rows/2)-11){
+              string = createSpan('parliament', 'Aragon_Parliament', 'https://github.com/PeterMPhillips/aragon-parliament', 'highlight', 'background', false, columns-25)
+            } else if(i===Math.floor(rows/2)-8){
+              string = createSpan('mybit_go', 'MyBit_Go', 'https://app.mybit.io', 'highlight', 'background', false, columns/3)
+            } else if(i===Math.floor(rows/2)-1){
+              string = createSpan('mybit_dao', 'MyBit_DAO', 'https://mainnet.aragon.org/#/mybitdao.eth', 'highlight', 'background', false, columns/1.5-9)
+            } else if(i===Math.floor(rows/2)+3){
+              string = createSpan('writingonthewall', 'WritingOnTheWall', 'http://writingonthewall.io', 'highlight', 'background', false, columns/10)
+            } else if(i===Math.floor(rows/2)+8){
+              string = createSpan('rpc', 'Rock_Paper_Scissors', 'https://blog.enigma.co/secret-rock-paper-scissors-f89ff1a91b1e', 'highlight', 'background', false, columns-30)
+            } else {
+              string = randomString(columns)
+            }
+          } else {
+            if(i===Math.floor(rows/2)){
+              string = randomString(Math.floor((columns-tag.length)/2))
+              var suffix = randomString(columns-string.length-tag.length)
+              var phrase = tag.split(' ')
+              for(var j=0; j<phrase.length; j++){
+                if(j > 0){
+                  string = string + randomString(1)
+                }
+                string = string + "<span id='tag' class='transition slow selected prev_background'>" + phrase[j] + "</span>"
+              }
+              string = string + suffix
+            } else if(i===Math.floor(rows/2)+4){
+              string = createSpan('contact', 'Contact', '', 'lowlight', 'background', true, columns/2)
+            } else if(i===Math.floor(rows/2)-5){
+              string = createSpan('projects', 'Projects', '', 'lowlight', 'background', true, columns-10)
+            } else if(i===Math.floor(rows/2)-7){
+              string = createSpan('services', 'Services', '', 'lowlight', 'background', true, columns/8)
+            } else {
+              string = randomString(columns)
+            }
+          }
+          $('#background').append('<p>' + string + '</p>')
+        }
+        window.setTimeout(function(){
+          $('.transition').each(function() {
+            $(this).addClass('display');
+          });
+        },50);
+
+
+        function randomString(length) {
+         var result = '';
+         var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+         var charactersLength = characters.length;
+         for ( var i = 0; i < length; i++ ) {
+            result += characters.charAt(Math.floor(Math.random() * charactersLength));
+         }
+         return result;
+        }
+
+        function createSpan(id, str, link, type, prev_type, clickable, start){
+          features = "class='transition quick " + type
+          if(id == prevState){
+            features += " prev_selected"
+          } else {
+            features += " prev_" + prev_type
+          }
+          if(clickable){
+            features += ` clickable' onClick="changeState('${type == 'selected' ? 'default' : id}', '${currentState}')"'`
+          } else {
+            features += "'"
+          }
+          if(link){
+            elem = "a"
+            link = " href='" + link + "' target='_blank'"
+          } else {
+            elem = "span"
+            link = ""
+          }
+          string = randomString(Math.floor(start))
+          string = string + "<" + elem + link + " id='" + id + "' " + features + ">" + str.toUpperCase() + "</" + elem + ">" + randomString(columns-string.length-str.length)
+          return string
+        }
+      }
+    </script>
+  </body>
+</html>
